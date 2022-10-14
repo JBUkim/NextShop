@@ -1,29 +1,15 @@
-import Layout from '../components/Layout'
-import data from '../utils/data'
-import ProductItem from '../components/Productitem'
+import Layout from "../components/Layout";
+import ProductItem from "../components/Productitem";
+import data from "../utils/data";
 
-  export default function Home() {
+export default function Home() {
   return (
-    // <Layout>
-    //   <div>
-    //     <div>
-    //       <h1 className='text-2xl font-bold'> Next Shop</h1>
-    //       <p>Kim Dahyuk</p>
-    //       <p> - Tailwind CSS </p>
-    //       <p> - MongoDB </p>
-    //       <p> </p>
-    //     </div>
-    // </div>
-    // </Layout>
-
-<Layout title="Home">
-      <div className="grid grid-cols1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+    <Layout title="Home Page">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {data.products.map((product) => (
-          <ProductItem product={product} key={product.slug} />
+          <ProductItem product={product} key={product.slug}></ProductItem>
         ))}
       </div>
     </Layout>
-
-
-  )
+  );
 }
