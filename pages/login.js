@@ -128,7 +128,7 @@ export default function LoginScreen() {
             </div>
         
         <div className="p-5 bg-gray-400 rounded-lg">
-          <div className="mb-4">
+          <div className="mb-3">
             <button
                 className="primary-button w-full"
                 type="button"
@@ -137,7 +137,7 @@ export default function LoginScreen() {
             </button>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <button
                 className="primary-button w-full"
                 type="button"
@@ -146,7 +146,7 @@ export default function LoginScreen() {
             </button>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <button
                 className="primary-button w-full"
                 type="button"
@@ -155,7 +155,7 @@ export default function LoginScreen() {
             </button>
           </div>
 
-          <div className="mb-4">
+          <div className="">
             <button
                 className="primary-button w-full"
                 type="button"
