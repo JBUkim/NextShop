@@ -1,73 +1,136 @@
-import React from "react";
-import styles from "../styles/profile.module.css";
-import Image from "next/image";
-import pic from "../public/images/profile.jpg";
-import Layout from "../components/Layout";
-import { BsFacebook, BsInstagram, BsTwitter, BsGithub, } from "react-icons/bs";
-import { SiNaver, SiVercel, } from "react-icons/si"
+import React, { useEffect } from 'react'
+import { signIn, useSession } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { getError } from '../utils/error'
+import axios from 'axios'
+import Layout from '../components/Layout'
 
+export default function ProfileScreen() {
+  const { data: session } = useSession()
 
-export default function profile() {
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm()
+
+  useEffect(() => {
+    setValue('name', session.user.name)
+    setValue('email', session.user.email)
+  }, [session.user, setValue])
+
+  const submitHandler = async ({ name, email, password }) => {
+    try {
+      await axios.put('/api/auth/update', {
+        name,
+        email,
+        password,
+      })
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      })
+      toast.success('Profile updated successfully')
+      if (result.error) {
+        toast.error(result.error)
+      }
+    } catch (err) {
+      toast.error(getError(err))
+    }
+  }
+
   return (
-    <Layout title="profile">
-      <div className={styles.wrap}>
-        <h1 className={styles.h1}>Profile</h1>
-        <div className={styles.review_box}>
-          <div className={styles.slide} id="slide">
-            <div className={styles.card}>
-              <div className={styles.profile}>
-              <div className={styles.image}>
-                <Image src={pic} width={70} height={70} />
-                </div>
-                <div>
-                  <h3 className="ml-5">김다혁</h3>
-                </div>
-              </div>
-              <p>
-                학교: 중부대학교 <br />
-                학번: 91812103 <br />
-                학과: 정보보호학과 <br />
-                이메일: hyuk6589@gamil.com <br />
-              </p>
-                
-                  <button className='px-4 py-2 font-bold text-2xl hover:bg-gray-300 rounded-full'> 
-                    <a href='https://www.facebook.com/' className={styles.btn}>
-                    <BsFacebook /> 
-                    </a>
-                  </button>
+    <Layout title="Profile">
+      <form
+        className="mx-auto max-w-screen-md"
+        onSubmit={handleSubmit(submitHandler)}
+      >
+        <h1 className="mb-4 text-xl">Update Profile</h1>
 
-                  <button className='px-4 py-2 font-bold text-2xl hover:bg-gray-300 rounded-full'> 
-                    <a href="https://twitter.com/?lang=ko" className={styles.btn}> 
-                      <BsTwitter /> 
-                    </a>
-                  </button>  
-                <button className='px-4 py-2 font-bold text-2xl hover:bg-gray-300 rounded-full'>
-                  <a href="https://www.instagram.com/kim.d.bung/" className={styles.btn}>
-                    <BsInstagram />
-                  </a>
-                </button>
-                <button className='px-4 py-2 font-bold text-2xl hover:bg-gray-300 rounded-full'>
-                  <a href="https://www.naver.com" className={styles.btn}> 
-                    <SiNaver />
-                  </a>
-                  </button>
-                  <button className='px-4 py-2 font-bold text-2xl  hover:bg-gray-300 rounded-full'>
-                  <a href="https://github.com/JBUkim" className={styles.btn}>
-                    <BsGithub />
-                  </a>
-                  </button>
-
-                  <button className='px-4 py-2 font-bold text-2xl hover:bg-gray-300 rounded-full'>
-                  <a href="https://vercel.com/dashboard" className={styles.btn}>
-                    <SiVercel />
-                  </a>
-                  </button>
-            </div>
-          </div>
-          <div className={styles.sidebar}></div>
+        <div className="mb-4">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            className="w-full"
+            id="name"
+            autoFocus
+            {...register('name', {
+              required: 'Please enter name',
+            })}
+          />
+          {errors.name && (
+            <div className="text-red-500">{errors.name.message}</div>
+          )}
         </div>
-      </div>
+
+        <div className="mb-4">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            className="w-full"
+            id="email"
+            {...register('email', {
+              required: 'Please enter email',
+              pattern: {
+                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                message: 'Please enter valid email',
+              },
+            })}
+          />
+          {errors.email && (
+            <div className="text-red-500">{errors.email.message}</div>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="password">Password</label>
+          <input
+            className="w-full"
+            type="password"
+            id="password"
+            {...register('password', {
+              minLength: { value: 6, message: 'password is more than 5 chars' },
+            })}
+          />
+          {errors.password && (
+            <div className="text-red-500 ">{errors.password.message}</div>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            className="w-full"
+            type="password"
+            id="confirmPassword"
+            {...register('confirmPassword', {
+              validate: (value) => value === getValues('password'),
+              minLength: {
+                value: 6,
+                message: 'confirm password is more than 5 chars',
+              },
+            })}
+          />
+          {errors.confirmPassword && (
+            <div className="text-red-500 ">
+              {errors.confirmPassword.message}
+            </div>
+          )}
+          {errors.confirmPassword &&
+            errors.confirmPassword.type === 'validate' && (
+              <div className="text-red-500 ">Password do not match</div>
+            )}
+        </div>
+        <div className="mb-4">
+          <button className="primary-button">Update Profile</button>
+        </div>
+      </form>
     </Layout>
-  );
+  )
 }
 
+ProfileScreen.auth = true
