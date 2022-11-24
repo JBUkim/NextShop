@@ -1,0 +1,109 @@
+.wrap {
+  width: 100%;
+  height: 80vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.h1 {
+  font-size: 30px;
+  position: relative;
+  margin-bottom: 80px;
+  font-weight: bold;
+}
+
+.h1::after {
+  content: "";
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(to right, hsl(52, 100%, 70%) , hsl(299, 100%, 65%));
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.review_box {
+  width: 90%;
+  max-width: 700px;
+  height: 320px;
+  border-radius: 10px;
+  box-shadow: -10px 10px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.card {
+  height: 300px;
+  padding: 40px;
+  color: black;
+  line-height: 22px;
+  box-sizing: border-box;
+  background: #fff;
+  position: relative;
+  z-index: 1;
+  line-height: 1.5;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile img {
+  border-radius: 50%;
+}
+
+.image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid gray;
+  overflow: hidden;
+  margin-right: 3px;
+}
+
+.profile h3 {
+  font-size: 26px;
+  color: #1e90ff;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.slide {
+  width: 100%;
+  padding-right: 60px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+}
+
+.sidebar img {
+  width: 25px;
+  padding: 5px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.btn {
+  border-color: white;
+    color: black ;
+    box-shadow: 0 0 20px 20px #1e90ff inset, 0 0 0 0 #1e90ff;
+    transition: all 150ms ease-in-out;
+
+}
+
+.btn:hover, 
+.btn:focus {
+  color: #1e90ff;
+  outline: 0;
+  box-shadow: 0 0 10px 0 #1e90ff inset, 0 0 10px 4px #1e90ff;
+}
