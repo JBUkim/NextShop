@@ -1,42 +1,36 @@
 import forge from "node-forge";
 
-const ComputeHash = (algorithm, inputText) => {
+const computeHash = (algorithm, inputText) => {
+  let md;
   switch (algorithm) {
     case "md5":
-      // eslint-disable-next-line no-case-declarations
-      let md1 = forge.md.md5.create();
-      md1.update(inputText);
-      hashValue = md1.digest().toHex();
-      res.status(200).json({ hashValue });
-      return;
+      md = forge.md.md5.create();
+      md.update(inputText);
+      return md.digest().toHex();
     case "sha1":
-      // eslint-disable-next-line no-case-declarations
-      let md2 = forge.md.sha1.create();
-      md2.update(inputText);
-      hashValue = md2.digest().toHex();
-      res.status(200).json({ hashValue });
-      return;
+      md = forge.md.sha1.create();
+      md.update(inputText);
+      return md.digest().toHex();
     case "sha256":
-      // eslint-disable-next-line no-case-declarations
-      let md3 = forge.md.sha256.create();
-      md3.update(inputText);
-      hashValue = md3.digest().toHex();
-      res.status(200).json({ hashValue });
-      return;
+      md = forge.md.sha256.create();
+      md.update(inputText);
+      return md.digest().toHex();
     case "sha384":
-      // eslint-disable-next-line no-case-declarations
-      let md4 = forge.md.sha384.create();
-      md4.update(inputText);
-      hashValue = md4.digest().toHex();
-      res.status(200).json({ hashValue });
-      return;
+      md = forge.md.sha384.create();
+      md.update(inputText);
+      return md.digest().toHex();
     case "sha512":
-      // eslint-disable-next-line no-case-declarations
-      let md5 = forge.md.sha512.create();
-      md5.update(inputText);
-      hashValue = md5.digest().toHex();
-      res.status(200).json({ hashValue });
+      md = forge.md.sha512.create();
+      md.update(inputText);
+      return md.digest().toHex();
   }
 };
 
-export default ComputeHash;
+const computeHmac = (algorithm, secret, inputText) => {
+  let hmac = forge.hmac.create();
+  hmac.start(algorithm, secret);
+  hmac.update(inputText);
+  return hmac.digest().toHex();
+};
+
+export { computeHash, computeHmac };

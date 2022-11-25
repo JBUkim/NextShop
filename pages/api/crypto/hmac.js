@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 import CryptoLog from "../../../models/CryptoLog";
-import { computeHmac } from "../../../utils/crypto-function";
+import { computeHmac } from "../../../utils/crypto-fuctions";
 import db from "../../../utils/db";
 
 export default async function handler(req, res) {
